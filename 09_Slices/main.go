@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 )
 
 func main() {
@@ -35,4 +36,10 @@ func main() {
 
 	fmt.Println(wtaRank)
 
+	scores := []int{93, 10, 12, 34, 2, 89, 11}
+
+	sort.Ints(scores)
+
+	fmt.Println(scores)
+	fmt.Println(sort.IntsAreSorted(scores))
 }
