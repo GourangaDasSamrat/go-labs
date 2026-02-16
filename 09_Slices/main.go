@@ -16,6 +16,7 @@ func main() {
 		"Anish Giri",
 	}
 
+	// add values
 	fideRank = append(fideRank, "Gukesh D", "Arjuna Erigaisi")
 
 	fmt.Println(fideRank)
@@ -42,4 +43,13 @@ func main() {
 
 	fmt.Println(scores)
 	fmt.Println(sort.IntsAreSorted(scores))
+
+	// remove value from slices based on index
+	var aptRank = []string{"Carlos Alcaraz", "Jannik Sinner", "Novak Djokovic", "Alexander Zverev", "Lorenzo Musetti"}
+	fmt.Println(aptRank)
+
+	var index int = 2
+
+	aptRank = append(aptRank[:index],aptRank[index+1:]...)
+	fmt.Println(aptRank)
 }
