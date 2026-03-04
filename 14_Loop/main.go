@@ -7,9 +7,9 @@ import (
 func main() {
 	fmt.Println("Loops in golang")
 
-	coffees := []string{"Latte", "Cappuccino", "Americano", "Macchiato", "Cortado"}
+	// coffees := []string{"Latte", "Cappuccino", "Americano", "Macchiato", "Cortado"}
 
-	fmt.Println(coffees)
+	// fmt.Println(coffees)
 
 	// for c := 0; c < len(coffees); c++ {
 	// 	fmt.Println(coffees[c])
@@ -26,4 +26,28 @@ func main() {
 	// for _, coffee := range coffees {
 	// 	fmt.Println(coffee)
 	// }
+
+	rogueValue := 1
+
+	for rogueValue < 10 {
+
+		if rogueValue == 2 {
+			goto mailMe
+		}
+
+		// if rogueValue == 5 {
+		// 	break
+		// }
+
+		// if rogueValue == 5 {
+		// 	rogueValue++
+		// 	continue
+		// }
+
+		fmt.Println("Value is: ", rogueValue)
+		rogueValue++
+	}
+
+mailMe:
+	fmt.Println("Go to gouranga.samrat@gmail.com")
 }
