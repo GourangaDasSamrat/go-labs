@@ -7,29 +7,30 @@ import (
 func main() {
 	fmt.Println("Welcome to maps section in golang")
 
-	// declare map where key and value both are string
+	// Declare a map where both key and value are strings
 	languages := make(map[string]string)
 
-	// add values on map
+	// Add key-value pairs to the map
 	languages["Js"] = "JavaScript"
 	languages["Ts"] = "TypeScript"
 	languages["Rb"] = "Ruby"
 	languages["Py"] = "Python"
 
-	// print the map
-	fmt.Println("List of all languages: ", languages)
+	// Print the entire map
+	fmt.Println("List of all languages:", languages)
 
-	// print a specific value from map
-	fmt.Println("JS stands for ", languages["Js"])
+	// Access a specific value using its key
+	fmt.Println("JS stands for", languages["Js"])
 
-	/// delete a value from map
+	// Delete a key-value pair from the map
 	delete(languages, "Rb")
 
-	// print the map
-	fmt.Println("List of all languages: ", languages)
+	// Print the map after deletion
+	fmt.Println("List of all languages after deletion:", languages)
 
-	// loop on map
+	// Loop through the map using range
+	// Note: Map iteration order in Go is random
 	for key, value := range languages {
-		fmt.Printf("For key %v value is %v\n", key, value)
+		fmt.Printf("For key %v, value is %v\n", key, value)
 	}
 }
