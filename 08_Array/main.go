@@ -5,14 +5,27 @@ import (
 )
 
 func main() {
-	fmt.Println("Welcome in array in golang")
+	fmt.Println("Welcome to arrays in golang")
 
-	wtaRank := [5]string{"Aryna Sabalenka", "Elena Rybakina", "Jessica Pegula", "Coco Gauff", "Elina Svitolina"}
+	// Array of top 5 WTA tennis players
+	wtaRank := [5]string{
+		"Aryna Sabalenka",
+		"Elena Rybakina",
+		"Jessica Pegula",
+		"Coco Gauff",
+		"Elina Svitolina",
+	}
 
-	fmt.Println(wtaRank)
-	fmt.Println("My favorite tennis player: ", wtaRank[1])
-	fmt.Println(len(wtaRank))
+	// Print the entire array
+	fmt.Println("WTA Rankings:", wtaRank)
 
+	// Access a specific element using its index (0-based)
+	fmt.Println("My favorite tennis player:", wtaRank[1])
+
+	// Length of the array
+	fmt.Println("Total WTA players in array:", len(wtaRank))
+
+	// Array of top 10 FIDE chess players
 	var fideRank = [10]string{
 		"Magnus Carlsen",
 		"Hikaru Nakamura",
@@ -26,7 +39,12 @@ func main() {
 		"Gukesh D",
 	}
 
-	fmt.Println(fideRank)
-	fmt.Println("My favorite chess player: ", fideRank[0])
-	fmt.Println(len(fideRank))
+	// Print the chess ranking array
+	fmt.Println("FIDE Rankings:", fideRank)
+
+	// Access a specific element
+	fmt.Println("My favorite chess player:", fideRank[0])
+
+	// Length of the array
+	fmt.Println("Total FIDE players in array:", len(fideRank))
 }
