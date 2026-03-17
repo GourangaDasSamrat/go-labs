@@ -7,38 +7,46 @@ import (
 	"os"
 )
 
-const url = "https://gourangadassamrat.github.io/date-wiz-docs" //this is the docs site of my super lightweight date library is js, in case you use js and work with date, must be checkout this library
+// url points to the documentation site you want to download
+// This example fetches your lightweight JS date library docs
+const url = "https://gourangadassamrat.github.io/date-wiz-docs"
 
 func main() {
 	fmt.Println("Downloading docs and starting server...")
 
-	// 1. Perform the GET request
+	// Step 1: Send an HTTP GET request to the target URL
 	res, err := http.Get(url)
 	checkNilErr(err)
-	defer res.Body.Close()
+	defer res.Body.Close() // Ensure the response body is closed after reading
 
-	// 2. Read the body data
+	// Step 2: Read the entire response body into memory
 	data, err := io.ReadAll(res.Body)
 	checkNilErr(err)
 
-	// 3. Create/Overwrite index.html
+	// Step 3: Create (or overwrite) a local file named index.html
 	file, err := os.Create("./index.html")
 	checkNilErr(err)
-	defer file.Close()
+	defer file.Close() // Ensure file is properly closed
 
-	// 4. Write data to file (using _ to ignore the returned length)
+	// Step 4: Write the downloaded data into the file
+	// We ignore the number of bytes written using _
 	_, err = file.Write(data)
 	checkNilErr(err)
 
 	fmt.Println("Successfully saved to index.html")
 	fmt.Println("Serving folder at http://localhost:8080")
 
-	// 5. Serve the current directory
+	// Step 5: Serve the current directory over HTTP
+	// This allows you to open the downloaded file in a browser
 	fs := http.FileServer(http.Dir("."))
+
+	// Start a local web server on port 8080
 	err = http.ListenAndServe(":8080", fs)
 	checkNilErr(err)
 }
 
+// checkNilErr is a simple helper for error handling
+// It stops execution immediately if an error occurs
 func checkNilErr(err error) {
 	if err != nil {
 		panic(err)
