@@ -7,57 +7,50 @@ import (
 	"time"
 )
 
-// baseURL defines the root server address used across requests
 const baseURL = "http://localhost:8000"
 
-// httpClient is a reusable client with timeout for all HTTP calls
 var httpClient = &http.Client{
 	Timeout: 10 * time.Second,
 }
 
-// main is the entry point and delegates execution to run
 func main() {
 	if err := run(); err != nil {
 		fmt.Println("Error:", err)
 	}
 }
 
-// run controls the application flow and stops on first failure
+// run coordinates the application logic
 func run() error {
-	if err := handleGetRequest(); err != nil {
-		return err
-	}
-
+	must(handleGetRequest(), "handle GET request")
 	return nil
 }
 
-// handleGetRequest sends a GET request and prints response details
+// handleGetRequest sends a GET request and prints the response
 func handleGetRequest() error {
 	url := baseURL + "/get"
 
-	// create a new HTTP request
 	req, err := http.NewRequest(http.MethodGet, url, nil)
-	if err != nil {
-		return fmt.Errorf("create request: %w", err)
-	}
+	must(err, "create request")
 
-	// execute the request using shared client
 	res, err := httpClient.Do(req)
-	if err != nil {
-		return fmt.Errorf("send request: %w", err)
-	}
+	must(err, "send request")
 	defer res.Body.Close()
 
-	// read response body
 	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		return fmt.Errorf("read response: %w", err)
-	}
+	must(err, "read response")
 
-	// print response information
 	fmt.Println("Status code:", res.StatusCode)
 	fmt.Println("Content length:", res.ContentLength)
 	fmt.Println(string(body))
 
 	return nil
+}
+
+
+// must checks if err is not nil and wraps it with a message
+// It panics immediately if there is an error
+func must(err error, message string) {
+	if err != nil {
+		panic(fmt.Errorf("%s: %w", message, err))
+	}
 }
