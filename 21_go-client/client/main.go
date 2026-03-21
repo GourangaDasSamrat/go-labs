@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"time"
 )
@@ -27,12 +28,16 @@ func main() {
 func run() error {
 	ctx := context.Background()
 
-	// Run both requests separately
+	// Run requests separately
 	if err := handleGetRequest(ctx); err != nil {
 		return err
 	}
 
 	if err := handlePostRequest(ctx); err != nil {
+		return err
+	}
+
+	if err := handlePostFormRequest(ctx); err != nil {
 		return err
 	}
 
@@ -95,6 +100,44 @@ func handlePostRequest(ctx context.Context) error {
 	}
 
 	printJSON("POST Success", res.StatusCode, body)
+	return nil
+}
+
+func handlePostFormRequest(ctx context.Context) error {
+	// Dynamic data example (array of fields and their values)
+	formFields := map[string]string{
+		"name":     "John Doe",
+		"country":  "USA",
+		"age":      "18",
+		"position": "Software Developer",
+	}
+
+	// Create url.Values and populate it with form fields
+	data := url.Values{}
+	for key, value := range formFields {
+		data.Add(key, value)
+	}
+
+	// Same request as before
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, baseURL+"/postform", bytes.NewReader([]byte(data.Encode())))
+	if err := check(err, "create post form"); err != nil {
+		return err
+	}
+
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	res, err := httpClient.Do(req)
+	if err := check(err, "do post form"); err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	body, err := io.ReadAll(res.Body)
+	if err := check(err, "read post form"); err != nil {
+		return err
+	}
+
+	printJSON("POST Form Success", res.StatusCode, body)
 	return nil
 }
 
