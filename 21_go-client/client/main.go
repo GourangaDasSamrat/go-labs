@@ -143,14 +143,23 @@ func handlePostFormRequest(ctx context.Context) error {
 
 // printJSON outputs a clean JSON line without backslashes
 func printJSON(msg string, status int, body []byte) {
+	// Clean up the response by converting it into a more readable format
+	var prettyBody bytes.Buffer
+	if err := json.Indent(&prettyBody, body, "", "    "); err != nil {
+		// If error occurs while formatting, print it as is
+		prettyBody = *bytes.NewBuffer(body)
+	}
+
+	// Prepare output structure
 	output := map[string]any{
 		"time":   time.Now().Format(time.RFC3339),
 		"msg":    msg,
 		"status": status,
-		"body":   json.RawMessage(body), // This removes the backslashes
+		"body":   json.RawMessage(prettyBody.Bytes()), // Pretty formatted body
 	}
 
 	// Use encoder to write directly to stdout for speed and cleanliness
 	enc := json.NewEncoder(os.Stdout)
+	enc.SetIndent("", "    ") // Indentation for the whole output
 	_ = enc.Encode(output)
 }
