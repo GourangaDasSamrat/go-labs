@@ -14,9 +14,10 @@ type player struct {
 	TitlesWon int    `json:"titles_won"` // Total Titles won in singles
 }
 
-func main()  {
-    fmt.Println("Welcome to json in golang")
-    EncodedJson()
+func main() {
+	fmt.Println("Welcome to json in golang")
+	EncodedJson()
+	DecodeJson()
 }
 
 func EncodedJson() {
@@ -73,10 +74,54 @@ func EncodedJson() {
 
 	// Convert to JSON
 	jsonData, err := json.MarshalIndent(players, "", "  ")
-	if err != nil {
-		fmt.Println("Error marshalling data:", err)
-		return
-	}
+	checkNilErr(err)
 
 	fmt.Println(string(jsonData))
+}
+
+func DecodeJson() {
+	jsonData := []byte(`
+	[
+	  {
+		"name": "Serena Williams",
+		"age": 40,
+		"country": "USA",
+		"rank": 15,
+		"hand": "Right",
+		"titles_won": 23
+	  },
+	  {
+		"name": "Ashleigh Barty",
+		"age": 26,
+		"country": "Australia",
+		"rank": 1,
+		"hand": "Right",
+		"titles_won": 15
+	  }
+	]
+	`)
+
+	var players []player
+
+	isValid := json.Valid(jsonData)
+
+	if isValid {
+		err := json.Unmarshal(jsonData, &players)
+		checkNilErr(err)
+		fmt.Println(players)
+	} else {
+		fmt.Println("JSON is invalid")
+	}
+
+	var playerData []map[string]any
+
+	err := json.Unmarshal(jsonData, &playerData)
+	checkNilErr(err)
+	fmt.Println(playerData)
+}
+
+func checkNilErr(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
