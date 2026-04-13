@@ -3,23 +3,42 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"time"
 )
 
-func processNum(numChan chan int) {
+var randNum int = rand.Intn(100)
 
+// send
+/*
+func processNum(numChan chan int) {
 	for num := range numChan {
 		fmt.Println("Processing number", num)
 		time.Sleep(5 * time.Nanosecond)
 	}
 }
+*/
+
+// receive
+func sum(result chan int, num1 int, num2 int) {
+	numResult := num1 + num2
+	result <- numResult
+}
 
 func main() {
-	numChan := make(chan int)
+	result := make(chan int)
 
-	go processNum(numChan)
+	go sum(result, randNum, randNum)
 
-	for {
-		numChan <- rand.Intn(100)
-	}
+	res := <-result
+
+	fmt.Println(res)
+
+	/*
+		numChan := make(chan int)
+
+		go processNum(numChan)
+
+		for {
+			numChan <- randNum
+		}
+	*/
 }
